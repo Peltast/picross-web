@@ -1,25 +1,35 @@
+import { useDispatch } from "react-redux";
+import { actionModifyTile } from "../state/actions";
+import { TileStatus } from "../data/puzzleData";
 
 
-export const PuzzleBoard = () => {
+export const PuzzleBoard = ({puzzle}) => {
+    const dispatch = useDispatch();
 
     const gridSize = 5;
+    // console.log(puzzle);
 
     const puzzleGrid = [];
     for (let y = 0; y < gridSize; y++) {
         const gridRow = [];
         for (let x = 0; x < gridSize; x++) {
-            gridRow.push(new PuzzleTile(x, y, false, false));
+            gridRow.push(new PuzzleTile(x, y, puzzle[y][x], false));
         }
 
         puzzleGrid.push(gridRow);
     }
 
+
+    const toggleTile = (tile) => {
+        dispatch(actionModifyTile(tile.x, tile.y, tile.getStatus() == TileStatus.EMPTY ? TileStatus.FILLED : TileStatus.EMPTY));
+    };
+
     const renderTile = (tile) => {
         const tileKey = tile.getKey();
-        const tileClass = (tile.getIndex() % 2 == 0) ? "gridTile" : "gridTile filled";
+        const tileClass = (tile.getStatus() == TileStatus.EMPTY) ? "gridTile" : "gridTile filled";
 
         return (
-            <div className={tileClass} key={tileKey}>
+            <div className={tileClass} key={tileKey} onClick={ () => toggleTile(tile) }>
                 { tile.getIndex() }
             </div>
         );
@@ -61,6 +71,8 @@ class PuzzleTile {
         return this.x + "," + this.y;
     }
     getIndex() { return (this.x + 1) + (5 * this.y); }
+
+    getStatus() { return this.status; }
 
 }
 
