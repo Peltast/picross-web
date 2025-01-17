@@ -1,5 +1,33 @@
-import { TileStatus } from "../data/puzzleData";
+import { TileStatus } from "./boardLogic";
 
+
+export const TargetHeader = ({targets, type}) => {
+	
+	const layoutCSS = (type == "column") ? "columnTargets" : "rowTargets";
+	const cellCSS = (type == "column") ? "columnHeader" : "rowHeader";
+
+	return (
+		<div className={ layoutCSS }>
+			{ targets.map(targetList =>
+
+                <div className={ cellCSS }>
+
+                    { targetList.map(target => {
+
+                        const targetCSS = target.status > 1 ? "targetSuccess" : (target.status < 0 ? "targetFail" : "targetNeutral");
+
+                        return (
+                            <span className={targetCSS}>
+                                {target.number}
+                            </span>);
+                        }
+                    )}
+
+                </div>
+			)}
+		</div>
+	);
+}
 
 
 export const calculateBoardTargets = (board) => {
@@ -28,13 +56,13 @@ const calculateColumnTargets = (board, x) => {
     let currentStreak = 0;
 
     for (let y = 0; y < board.length; y++) {
+
         if (y == board.length - 1 && board[y][x] == TileStatus.FILLED) {
-            columnTargets.push(currentStreak + 1);
+            columnTargets.push(createTarget(currentStreak + 1));
             continue;
         }
-
         else if (board[y][x] == TileStatus.EMPTY && currentStreak > 0) {
-            columnTargets.push(currentStreak);
+            columnTargets.push(createTarget(currentStreak));
             currentStreak = 0;
         }
         else if (board[y][x] == TileStatus.FILLED) {
@@ -50,13 +78,13 @@ const calculateRowTargets = (row) => {
     let currentStreak = 0;
 
     for (let x = 0; x < row.length; x++) {
+
         if (x == row.length - 1 && row[x] == TileStatus.FILLED) {
-            rowTargets.push(currentStreak + 1);
+            rowTargets.push(createTarget(currentStreak + 1));
             continue;
         }
-
         else if (row[x] == TileStatus.EMPTY && currentStreak > 0) {
-            rowTargets.push(currentStreak);
+            rowTargets.push(createTarget(currentStreak));
             currentStreak = 0;
         }
         else if (row[x] == TileStatus.FILLED) {
@@ -68,26 +96,11 @@ const calculateRowTargets = (row) => {
     return rowTargets;    
 };
 
-const calculateTargetForSeries = (array) => {
-    const targets = [];
-    const currentStreak = 0;
-
-    for (let i = 0; i < array.length; i++) {
-
-        if ((array[i] == TileStatus.EMPTY || i == array.length - 1) && currentStreak > 0) {
-            targets.push(currentStreak);
-            currentStreak = 0;
-        }
-        else if (array[i] == TileStatus.FILLED) {
-            currentStreak += 1;
-
-            if (i == array.length - 1) {
-                targets.push(currentStreak);
-            }
-        }
-    }
-
-    return targets;
-};
+const createTarget = (number) => {
+    return {
+        number: number,
+        status: 0
+    };
+}
 
 
