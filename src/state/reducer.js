@@ -1,6 +1,6 @@
 import { TestPuzzle } from "../data/testPuzzle";
-import { CreateEmptyBoard, PaintTileStatus, PuzzleTile, TileStatus } from "../nonogram/boardLogic";
-import { calculateBoardTargets } from "../nonogram/puzzleTargets";
+import { CreateBoardFromData, CreateEmptyBoard, PaintTileStatus } from "../nonogram/boardLogic";
+import { CalculateBoardTargets, CompareBoardToTarget } from "../nonogram/puzzleTargets";
 import { STORE_ACTIONS } from "./actions";
 
 
@@ -8,8 +8,10 @@ import { STORE_ACTIONS } from "./actions";
 const initialState = {
 
     puzzle: TestPuzzle,
+
     board: CreateEmptyBoard(TestPuzzle.size),
-    targets: calculateBoardTargets(TestPuzzle.solution),
+    solution: CreateBoardFromData(TestPuzzle.solution),
+    targets: CalculateBoardTargets(CreateBoardFromData(TestPuzzle.solution)),
 
 };
 
@@ -22,14 +24,20 @@ export const puzzleReducer = (state = initialState, action) => {
             const updatedBoard = getUpdatedBoard(state.board, action.payload.x, action.payload.y);
             return {
                 ...state,
-                board: [...updatedBoard]
+                board: updatedBoard
+            };
+        
+        case STORE_ACTIONS.Update_Targets:
+            const calcTargets = getUpdatedTargets(state.targets, state.board, action.payload.x, action.payload.y);
+            return {
+                ...state,
+                targets: calcTargets
             };
 
         default:
             return state;
     }
 };
-
 
 
 const getUpdatedBoard = (board, x, y) => {
@@ -41,5 +49,18 @@ const getUpdatedBoard = (board, x, y) => {
     newBoard[y] = newBoardRow;
     
     return newBoard;
-}
+};
 
+const getUpdatedTargets = (oldTargets, board, x, y) => {
+    const newRows = [...oldTargets.rows];
+    const newColumns = [...oldTargets.columns];
+    
+    const newTargets = CompareBoardToTarget(board, x, y, oldTargets);
+    newRows[y] = newTargets.row;
+    newColumns[x] = newTargets.column;
+    
+    return {
+        rows: newRows,
+        columns: newColumns
+    };
+};

@@ -21,13 +21,13 @@ function App() {
 				<TargetHeader targets={targets.rows} type="row" />
 				<TargetHeader targets={targets.columns} type="column"  />
 
-				<PuzzleBoard board={board}/>
+				<PuzzleBoard board={board} />
 				
 			</div>
 
 		</div>
 	);
-}
+};
 
 
 

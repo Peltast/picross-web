@@ -23,7 +23,26 @@ export const CreateEmptyBoard = (boardSize) => {
     }
 
     return newBoard;
-}
+};
+
+export const CreateBoardFromData = (data) => {
+    const newBoard = [];
+    
+    for (let y = 0; y < data.length; y++) {
+        const gridRow = [];
+        for (let x = 0; x < data[y].length; x++) {
+            gridRow.push({
+                x: x,
+                y: y,
+                status: data[y][x]
+            });
+        }
+
+        newBoard.push(gridRow);
+    }
+
+    return newBoard;
+};
 
 
 export const PaintTileStatus = (tile) => {
@@ -33,5 +52,5 @@ export const PaintTileStatus = (tile) => {
     else if (tile.status == TileStatus.FILLED) {
         return TileStatus.EMPTY;
     }
-}
+};
 
