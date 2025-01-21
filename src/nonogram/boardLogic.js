@@ -45,12 +45,23 @@ export const CreateBoardFromData = (data) => {
 };
 
 
-export const PaintTileStatus = (tile) => {
+export const PaintTileResultStatus = (tile) => {
     if (tile.status == TileStatus.EMPTY) {
         return TileStatus.FILLED;
     }
     else if (tile.status == TileStatus.FILLED) {
         return TileStatus.EMPTY;
     }
+    else if (tile.status == TileStatus.CROSSED) {
+        return TileStatus.EMPTY;
+    }
 };
+export const CrossTileResultStatus = (tile) => {
+    if (tile.status == TileStatus.EMPTY) {
+        return TileStatus.CROSSED;
+    }
+    else if (tile.status == TileStatus.CROSSED) {
+        return TileStatus.EMPTY;
+    }
+}
 

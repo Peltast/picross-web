@@ -46,18 +46,25 @@ export const CompareBoardToTarget = (board, x, y, targets) => {
 };
 const CompareTargetSeries = (boardSeries, targetSeries) => {
     const seriesResult = [...targetSeries];
-    
+    const seriesOverload = (boardSeries.length > targetSeries.length);
+
     for (let i = 0; i < targetSeries.length; i++) {
         const seriesVal = targetSeries[i].number;
 
-        if (i >= boardSeries.length) {
+        if (seriesOverload) {
+            seriesResult[i] = { number: seriesVal, status: -1 };
+        }
+
+        else if (i >= boardSeries.length) {
             seriesResult[i] = { number: seriesVal, status: 0 };
             continue;
         }
 
-        if (targetSeries[i].number == boardSeries[i].number) {
-            console.log(targetSeries[i].number)
+        else if (targetSeries[i].number == boardSeries[i].number) {
             seriesResult[i] = { number: seriesVal, status: 1 };
+        }
+        else if (boardSeries[i].number > 0) {
+            seriesResult[i] = { number: seriesVal, status: -1 };
         }
         else {
             seriesResult[i] = { number: seriesVal, status: 0 };
@@ -99,7 +106,7 @@ const CalculateColumnTargets = (board, x) => {
             columnTargets.push(createTarget(currentStreak + 1));
             continue;
         }
-        else if (board[y][x].status == TileStatus.EMPTY && currentStreak > 0) {
+        else if (board[y][x].status != TileStatus.FILLED && currentStreak > 0) {
             columnTargets.push(createTarget(currentStreak));
             currentStreak = 0;
         }
@@ -120,7 +127,7 @@ export const CalculateRowTargets = (row) => {
             rowTargets.push(createTarget(currentStreak + 1));
             continue;
         }
-        else if (row[x].status == TileStatus.EMPTY && currentStreak > 0) {
+        else if (row[x].status != TileStatus.FILLED && currentStreak > 0) {
             rowTargets.push(createTarget(currentStreak));
             currentStreak = 0;
         }

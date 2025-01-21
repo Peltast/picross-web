@@ -1,5 +1,5 @@
 import { TestPuzzle } from "../data/testPuzzle";
-import { CreateBoardFromData, CreateEmptyBoard, PaintTileStatus } from "../nonogram/boardLogic";
+import { CreateBoardFromData, CreateEmptyBoard, CrossTileResultStatus, PaintTileResultStatus } from "../nonogram/boardLogic";
 import { CalculateBoardTargets, CompareBoardToTarget } from "../nonogram/puzzleTargets";
 import { STORE_ACTIONS } from "./actions";
 
@@ -17,11 +17,25 @@ const initialState = {
 
 export const puzzleReducer = (state = initialState, action) => {
     // console.log(action.payload);
+    let tile, updatedBoard;
 
     switch (action.type) {
 
-        case STORE_ACTIONS.Modify_Tile:
-            const updatedBoard = getUpdatedBoard(state.board, action.payload.x, action.payload.y);
+        case STORE_ACTIONS.Paint_Tile:
+            tile = action.payload.tile;
+            const paintStatus = PaintTileResultStatus(tile);
+            updatedBoard = getUpdatedBoard(state.board, tile.x, tile.y, paintStatus);
+
+            return {
+                ...state,
+                board: updatedBoard
+            };
+        case STORE_ACTIONS.Cross_Tile:
+            tile = action.payload.tile;
+            const crossStatus = CrossTileResultStatus(tile);
+            console.log(crossStatus);
+            updatedBoard = getUpdatedBoard(state.board, tile.x, tile.y, crossStatus);
+
             return {
                 ...state,
                 board: updatedBoard
@@ -40,9 +54,9 @@ export const puzzleReducer = (state = initialState, action) => {
 };
 
 
-const getUpdatedBoard = (board, x, y) => {
+const getUpdatedBoard = (board, x, y, newStatus) => {
     const newBoard = [...board];
-    const updatedTile = { x: x, y: y, status: PaintTileStatus(newBoard[y][x]) };
+    const updatedTile = { x: x, y: y, status: newStatus };
     
     const newBoardRow = [...board[y]];
     newBoardRow[x] = updatedTile

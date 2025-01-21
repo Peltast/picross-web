@@ -2,15 +2,20 @@
 
 
 export const STORE_ACTIONS = {
-    Modify_Tile: "puzzleGrid/tileModified",
+    Paint_Tile: "puzzleGrid/tilePainted",
+    Cross_Tile: "puzzleGrid/tileCrossed",
 
     Update_Targets: "puzzleGrid/targetsUpdated",
 };
 
 
-export const actionModifyTile = (x, y) => ({
-    type: STORE_ACTIONS.Modify_Tile,
-    payload: { x: x, y: y }
+export const actionPaintTile = (tile) => ({
+    type: STORE_ACTIONS.Paint_Tile,
+    payload: { tile: tile }
+});
+export const actionCrossTile = (tile) => ({
+    type: STORE_ACTIONS.Cross_Tile,
+    payload: { tile: tile}
 });
 
 
