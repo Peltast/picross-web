@@ -13,6 +13,7 @@ const initialState = {
     solution: CreateBoardFromData(TestPuzzle.solution),
     targets: CalculateBoardTargets(CreateBoardFromData(TestPuzzle.solution)),
 
+    paintMode: true
 };
 
 export const puzzleReducer = (state = initialState, action) => {
@@ -22,6 +23,7 @@ export const puzzleReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case STORE_ACTIONS.Paint_Tile:
+            
             tile = action.payload.tile;
             const paintStatus = PaintTileResultStatus(tile);
             updatedBoard = getUpdatedBoard(state.board, tile.x, tile.y, paintStatus);
@@ -31,9 +33,9 @@ export const puzzleReducer = (state = initialState, action) => {
                 board: updatedBoard
             };
         case STORE_ACTIONS.Cross_Tile:
+
             tile = action.payload.tile;
             const crossStatus = CrossTileResultStatus(tile);
-            console.log(crossStatus);
             updatedBoard = getUpdatedBoard(state.board, tile.x, tile.y, crossStatus);
 
             return {
@@ -47,6 +49,13 @@ export const puzzleReducer = (state = initialState, action) => {
                 ...state,
                 targets: calcTargets
             };
+
+
+        case STORE_ACTIONS.Toggle_Paint_Mode:
+            return {
+                ...state,
+                paintMode: !state.paintMode
+            }
 
         default:
             return state;

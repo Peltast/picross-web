@@ -6,6 +6,8 @@ export const STORE_ACTIONS = {
     Cross_Tile: "puzzleGrid/tileCrossed",
 
     Update_Targets: "puzzleGrid/targetsUpdated",
+
+    Toggle_Paint_Mode: "puzzle/paintModeToggled"
 };
 
 
@@ -24,5 +26,10 @@ export const actionUpdateTargets = (x, y) => ({
     payload: { x: x, y: y}
 });
 
+
+export const actionTogglePaintMode = () => ({
+    type: STORE_ACTIONS.Toggle_Paint_Mode,
+    payload: {}
+});
 
 

@@ -4,31 +4,31 @@ import './css/App.css';
 
 import PuzzleBoard from './nonogram/puzzleBoard';
 import { TargetHeader } from './nonogram/puzzleTargets';
+import PaintSwitch from './nonogram/paintSwitch';
 
 
 function App() {
 	const puzzle = useSelector(state => state.puzzle);
 	const board = useSelector(state => state.board);
 	const targets = useSelector(state => state.targets);
-
-	// console.log(targets);
+	const paintMode = useSelector(state => state.paintMode);
 
 	return (
 		<div className="App">
 
-			<div className="puzzleContainer">
+			<PaintSwitch paintMode={paintMode} />
 
+			<div className="puzzleContainer">
 				<TargetHeader targets={targets.rows} type="row" />
 				<TargetHeader targets={targets.columns} type="column"  />
 
-				<PuzzleBoard board={board} />
+				<PuzzleBoard board={board} paintMode={paintMode} />
 				
 			</div>
 
 		</div>
 	);
 };
-
 
 
 export default App;

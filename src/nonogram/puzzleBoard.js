@@ -5,7 +5,7 @@ import { TileStatus } from "./boardLogic";
 import { useEffect } from "react";
 
 
-export const PuzzleBoard = ({board}) => {
+export const PuzzleBoard = ({board, paintMode}) => {
 
     return (
         <div className="puzzleGrid">
@@ -13,7 +13,7 @@ export const PuzzleBoard = ({board}) => {
 
                 <div className="gridRow">
                     { row.map(tile =>
-                        <PuzzleTile tile={tile} />
+                        <PuzzleTile tile={tile} paintMode={paintMode} />
                     )}
                 </div>
 
@@ -23,7 +23,7 @@ export const PuzzleBoard = ({board}) => {
 
 };
 
-const PuzzleTile = ({ tile }) => {
+const PuzzleTile = ({ tile, paintMode }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -39,7 +39,13 @@ const PuzzleTile = ({ tile }) => {
     
 
     const paintTile = (tile) => {
-        dispatch(actionPaintTile(tile));
+        if (paintMode) {
+            dispatch(actionPaintTile(tile));
+        }
+        else {
+            dispatch(actionCrossTile(tile));
+        }
+
         dispatch(actionUpdateTargets(tile.x, tile.y));
     };
 

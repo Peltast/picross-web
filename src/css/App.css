@@ -14,29 +14,92 @@ body {
 
 @media (min-width: 0px) {
 
+	.App {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
 	.puzzleGrid {
 		height: 75vw;
 		width: 75vw;
+	}
+
+	.paintButton {
+		width: 15vw;
+		height: 15vw;
+		margin-bottom: 30px;
+		margin-right: 0px;
 	}
 }
 
 @media (min-width: 600px) and (orientation: landscape) {
 
+	.App {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+
 	.puzzleGrid {
 		width: 75vh;
 		height: 75vh;
+	}
+
+	.paintButton {
+		width: 15vh;
+		height: 15vh;
+		margin-right: 30px;
+		margin-bottom: 0px;
 	}
 }
 
 .App {
 	display: flex;
 }
-
-
 .puzzleContainer {
 	display: grid;
 	user-select: none;
 }
+
+
+/*  PAINT MODE BUTTON  */
+
+.paintButton {
+	/* width: 60px;
+	height: 60px; */
+	padding: 0px;
+}
+
+.paintButton.fill {
+	background-color: #9fbfbf;
+	border: 1px solid white;
+	
+	text-align: center;
+}
+
+.paintButton.cross {
+	background-color: white;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.paintButton.cross::before,
+.paintButton.cross::after {
+	position: absolute;
+	content: '';
+	width: 100%;
+	height: 4px;
+	background-color: orange;
+}
+.paintButton.cross::before {
+	transform: rotate(45deg);
+}
+.paintButton.cross::after {
+	transform: rotate(-45deg);
+}
+
 
 
 /*  PUZZLE TARGETS  */
@@ -125,7 +188,7 @@ body {
 
 
 .gridTile.filled {
-	background-color: #2f4f4f;
+	background-color: #1f2f2f;
 }
 
 
