@@ -6,6 +6,7 @@ export const STORE_ACTIONS = {
     Cross_Tile: "puzzleGrid/tileCrossed",
 
     Update_Targets: "puzzleGrid/targetsUpdated",
+    Update_GameState: "puzzleGrid/stateUpdated",
 
     Toggle_Paint_Mode: "puzzle/paintModeToggled"
 };
@@ -21,9 +22,13 @@ export const actionCrossTile = (tile) => ({
 });
 
 
-export const actionUpdateTargets = (x, y) => ({
+export const actionUpdateTargets = (tile) => ({
     type: STORE_ACTIONS.Update_Targets,
-    payload: { x: x, y: y}
+    payload: { tile: tile }
+});
+export const actionUpdateGameState = (tile) => ({
+    type: STORE_ACTIONS.Update_GameState,
+    payload: {tile: tile }
 });
 
 

@@ -3,8 +3,8 @@ import { TileStatus } from "./boardLogic";
 
 export const TargetHeader = ({targets, type}) => {
 	
-	const layoutCSS = (type == "column") ? "columnTargets" : "rowTargets";
-	const cellCSS = (type == "column") ? "columnHeader" : "rowHeader";
+	const layoutCSS = (type === "column") ? "columnTargets" : "rowTargets";
+	const cellCSS = (type === "column") ? "columnHeader" : "rowHeader";
 
 	return (
 		<div className={ layoutCSS }>
@@ -60,7 +60,7 @@ const CompareTargetSeries = (boardSeries, targetSeries) => {
             continue;
         }
 
-        else if (targetSeries[i].number == boardSeries[i].number) {
+        else if (targetSeries[i].number === boardSeries[i].number) {
             seriesResult[i] = { number: seriesVal, status: 1 };
         }
         else if (boardSeries[i].number > 0) {
@@ -74,7 +74,21 @@ const CompareTargetSeries = (boardSeries, targetSeries) => {
     return seriesResult;
 };
 
-
+export const IsCoordinateCorrect = (board, x, y, targets) => {
+    const boardColumn = CalculateColumnTargets(board, x);
+    const boardRow = CalculateRowTargets(board[y]);
+    const colResult = isSeriesEqual(boardColumn, targets.columns[x]);
+    const rowResult = isSeriesEqual(boardRow, targets.rows[y]);
+    
+    return (colResult && rowResult);
+}
+const isSeriesEqual = (boardSeries, targetSeries) => {
+    if (boardSeries.length !== targetSeries.length) { return false; }
+    for (let i = 0; i < boardSeries.length; i++) {
+        if (boardSeries[i].number !== targetSeries[i].number) { return false; }
+    }
+    return true;
+}
 
 export const CalculateBoardTargets = (board) => {
     const rows = [];
@@ -102,15 +116,15 @@ const CalculateColumnTargets = (board, x) => {
     let currentStreak = 0;
 
     for (let y = 0; y < board.length; y++) {
-        if (y == board.length - 1 && board[y][x].status == TileStatus.FILLED) {
+        if (y === board.length - 1 && board[y][x].status === TileStatus.FILLED) {
             columnTargets.push(createTarget(currentStreak + 1));
             continue;
         }
-        else if (board[y][x].status != TileStatus.FILLED && currentStreak > 0) {
+        else if (board[y][x].status !== TileStatus.FILLED && currentStreak > 0) {
             columnTargets.push(createTarget(currentStreak));
             currentStreak = 0;
         }
-        else if (board[y][x].status == TileStatus.FILLED) {
+        else if (board[y][x].status === TileStatus.FILLED) {
             currentStreak += 1;
         }
     }
@@ -123,15 +137,15 @@ export const CalculateRowTargets = (row) => {
     let currentStreak = 0;
 
     for (let x = 0; x < row.length; x++) {
-        if (x == row.length - 1 && row[x].status == TileStatus.FILLED) {
+        if (x === row.length - 1 && row[x].status === TileStatus.FILLED) {
             rowTargets.push(createTarget(currentStreak + 1));
             continue;
         }
-        else if (row[x].status != TileStatus.FILLED && currentStreak > 0) {
+        else if (row[x].status !== TileStatus.FILLED && currentStreak > 0) {
             rowTargets.push(createTarget(currentStreak));
             currentStreak = 0;
         }
-        else if (row[x].status == TileStatus.FILLED) {
+        else if (row[x].status === TileStatus.FILLED) {
             currentStreak += 1;
         }
     }

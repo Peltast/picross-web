@@ -1,11 +1,12 @@
 import { useDispatch } from "react-redux";
-
-import { actionCrossTile, actionPaintTile, actionUpdateTargets } from "../state/actions";
-import { TileStatus } from "./boardLogic";
 import { useEffect } from "react";
 
+import { actionCrossTile, actionPaintTile, actionUpdateGameState, actionUpdateTargets } from "../state/actions";
+import { TileStatus } from "./boardLogic";
+import { PuzzleState } from "../data/puzzleData";
 
-export const PuzzleBoard = ({board, paintMode}) => {
+
+export const PuzzleBoard = ({ board, paintMode, gameState }) => {
 
     return (
         <div className="puzzleGrid">
@@ -46,12 +47,13 @@ const PuzzleTile = ({ tile, paintMode }) => {
             dispatch(actionCrossTile(tile));
         }
 
-        dispatch(actionUpdateTargets(tile.x, tile.y));
+        dispatch(actionUpdateTargets(tile));
+        dispatch(actionUpdateGameState(tile));
     };
 
     const crossTile = (tile) => {
         dispatch(actionCrossTile(tile));
-        dispatch(actionUpdateTargets(tile.x, tile.y));
+        dispatch(actionUpdateTargets(tile));
     };
 
     const getTileCSS = (status) => {
