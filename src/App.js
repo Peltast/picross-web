@@ -2,9 +2,9 @@
 import { useSelector } from 'react-redux';
 import './css/App.css';
 
-import PuzzleBoard from './nonogram/puzzleBoard';
+import { PuzzleBoard } from './nonogram/puzzleBoard';
+import { PaintSwitch } from './nonogram/paintSwitch';
 import { TargetHeader } from './nonogram/puzzleTargets';
-import PaintSwitch from './nonogram/paintSwitch';
 import { PuzzleState } from './data/puzzleData';
 
 
@@ -18,7 +18,10 @@ function App() {
 	return (
 		<div className="App">
 
-			<PaintSwitch paintMode={paintMode} />
+			<PaintSwitch
+				paintMode={paintMode}
+				gameState={gameState}
+			/>
 
 			<div className="puzzleContainer">
 

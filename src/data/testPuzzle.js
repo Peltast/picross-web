@@ -8,8 +8,8 @@ export const TestPuzzle = {
     difficulty: DifficultyLevel.EASY,
     
     tiles: {
-        1: { color: "0xff0000", status: TileStatus.FILLED },
-        0: { color: "0xffffff", status: TileStatus.EMPTY }
+        1: { color: "#ff0000", status: TileStatus.FILLED },
+        0: { color: "#ffffff", status: TileStatus.EMPTY }
     },
 
     solution: [
@@ -28,8 +28,8 @@ export const LargeTestPuzzle = {
     difficulty: DifficultyLevel.EASY,
     
     tiles: {
-        1: { color: "0xff0000", status: TileStatus.FILLED },
-        0: { color: "0xffffff", status: TileStatus.EMPTY }
+        1: { color: "#ff0000", status: TileStatus.FILLED },
+        0: { color: "#ffffff", status: TileStatus.EMPTY }
     },
 
     solution: [

@@ -6,8 +6,11 @@ export const TileStatus = {
 };
 
 
-export const CreateEmptyBoard = (boardSize) => {
+export const CreateEmptyBoard = (puzzleData) => {
+    const boardSize = puzzleData.size;
     const newBoard = [];
+    const puzzleTiles = puzzleData.tiles;
+    const puzzleBoard = puzzleData.solution;
 
     for (let y = 0; y < boardSize; y++) {
         const gridRow = [];
@@ -15,7 +18,8 @@ export const CreateEmptyBoard = (boardSize) => {
             gridRow.push({
                 x: x,
                 y: y,
-                status: TileStatus.EMPTY
+                status: TileStatus.EMPTY,
+                color: LookUpTileData(puzzleTiles, puzzleBoard, x, y).color
             });
         }
 
@@ -25,7 +29,7 @@ export const CreateEmptyBoard = (boardSize) => {
     return newBoard;
 };
 
-export const CreateBoardFromData = (puzzleData) => {
+export const CreateSolvedBoard = (puzzleData) => {
     const newBoard = [];
     console.log(puzzleData);
     const puzzleTiles = puzzleData.tiles;
@@ -34,10 +38,12 @@ export const CreateBoardFromData = (puzzleData) => {
     for (let y = 0; y < puzzleBoard.length; y++) {
         const gridRow = [];
         for (let x = 0; x < puzzleBoard[y].length; x++) {
+            
             gridRow.push({
                 x: x,
                 y: y,
-                status: puzzleBoard[y][x]
+                status: puzzleBoard[y][x],
+                color: LookUpTileData(puzzleTiles, puzzleBoard, x, y).color
             });
         }
 
@@ -46,8 +52,10 @@ export const CreateBoardFromData = (puzzleData) => {
 
     return newBoard;
 };
-const LookUpTileData = (tileIndex, tileData) => {
-    
+const LookUpTileData = (tiles, board, x, y) => {
+    const tileType = board[y][x];
+    const tileData = tiles[tileType];
+    return tileData;
 }
 
 

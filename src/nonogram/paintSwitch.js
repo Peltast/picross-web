@@ -1,18 +1,32 @@
 import { useDispatch } from "react-redux";
-import { actionTogglePaintMode } from "../state/actions";
+import { actionResetGame, actionTogglePaintMode } from "../state/actions";
+import { PuzzleState } from "../data/puzzleData";
 
 
-export const PaintSwitch = ({paintMode}) => {
+export const PaintSwitch = ({ paintMode, gameState }) => {
 	const dispatch = useDispatch();
 
 	const togglePaintMode = () => {
-		dispatch(actionTogglePaintMode());
+		if (gameState === PuzzleState.FINISHED) {
+			dispatch(actionResetGame());
+		}
+		else {
+			dispatch(actionTogglePaintMode());
+		}
 	}
 
 	let buttonCSS = "btn btn-primary paintButton ";
-	buttonCSS += paintMode ? "fill" : "cross";
+	let buttonTxt = "";
 
-	const buttonTxt = paintMode ? "Paint" : "X";
+	if (gameState === PuzzleState.FINISHED) {
+		buttonCSS += "reset";
+		buttonTxt = "Reset";
+	}
+	else {
+		buttonCSS += paintMode ? "fill" : "cross";
+		buttonTxt = paintMode ? "Paint" : "X";
+	}
+
 
 	return (
 		<div>

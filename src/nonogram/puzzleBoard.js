@@ -14,7 +14,11 @@ export const PuzzleBoard = ({ board, paintMode, gameState }) => {
 
                 <div className="gridRow">
                     { row.map(tile =>
-                        <PuzzleTile tile={tile} paintMode={paintMode} />
+                        <PuzzleTile
+                            tile={tile}
+                            paintMode={paintMode}
+                            gameState={gameState}
+                        />
                     )}
                 </div>
 
@@ -24,7 +28,7 @@ export const PuzzleBoard = ({ board, paintMode, gameState }) => {
 
 };
 
-const PuzzleTile = ({ tile, paintMode }) => {
+const PuzzleTile = ({ tile, paintMode, gameState }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -40,6 +44,8 @@ const PuzzleTile = ({ tile, paintMode }) => {
     
 
     const paintTile = (tile) => {
+        if (gameState === PuzzleState.FINISHED) { return; }
+        
         if (paintMode) {
             dispatch(actionPaintTile(tile));
         }
@@ -52,11 +58,15 @@ const PuzzleTile = ({ tile, paintMode }) => {
     };
 
     const crossTile = (tile) => {
+        if (gameState === PuzzleState.FINISHED) { return; }
+
         dispatch(actionCrossTile(tile));
         dispatch(actionUpdateTargets(tile));
     };
 
     const getTileCSS = (status) => {
+        if (gameState === PuzzleState.FINISHED) { return "gridTile"; }
+
         switch (status) {
             case TileStatus.EMPTY:
                 return "gridTile";
@@ -72,12 +82,15 @@ const PuzzleTile = ({ tile, paintMode }) => {
     const tileKey = tile.x + "," + tile.y;
     const tileClass = getTileCSS(tile.status);
 
+    const tileStyling = (gameState === PuzzleState.FINISHED) ? { backgroundColor: tile.color } : {};
+
     return (
         <div
             className={tileClass}
             key={tileKey}
             onClick={ () => paintTile(tile) }
             onContextMenu={ () => crossTile(tile) }
+            style={ tileStyling }
         >
             {  }
         </div>

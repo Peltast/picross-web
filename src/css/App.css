@@ -69,13 +69,12 @@ body {
 	/* width: 60px;
 	height: 60px; */
 	padding: 0px;
+	text-align: center;
 }
 
 .paintButton.fill {
 	background-color: #9fbfbf;
-	border: 1px solid white;
-	
-	text-align: center;
+	border: 3px solid white;
 }
 
 .paintButton.cross {
@@ -84,6 +83,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	border: 3px solid orange;
 }
 .paintButton.cross::before,
 .paintButton.cross::after {
@@ -98,6 +98,11 @@ body {
 }
 .paintButton.cross::after {
 	transform: rotate(-45deg);
+}
+
+.paintButton.reset {
+	background-color: #55f;
+	border: 3px solid white;
 }
 
 

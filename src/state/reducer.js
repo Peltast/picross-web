@@ -1,6 +1,6 @@
 import { PuzzleState } from "../data/puzzleData";
 import { LargeTestPuzzle, TestPuzzle } from "../data/testPuzzle";
-import { CheckBoardVictory, CreateBoardFromData, CreateEmptyBoard, CrossTileResultStatus, PaintTileResultStatus } from "../nonogram/boardLogic";
+import { CheckBoardVictory, CreateSolvedBoard, CreateEmptyBoard, CrossTileResultStatus, PaintTileResultStatus } from "../nonogram/boardLogic";
 import { CalculateBoardTargets, CompareBoardToTarget, IsCoordinateCorrect } from "../nonogram/puzzleTargets";
 import { STORE_ACTIONS } from "./actions";
 
@@ -11,9 +11,9 @@ const initialState = {
 
     puzzle: startPuzzle,
 
-    board: CreateEmptyBoard(startPuzzle.size),
-    solution: CreateBoardFromData(startPuzzle),
-    targets: CalculateBoardTargets(CreateBoardFromData(startPuzzle)),
+    board: CreateEmptyBoard(startPuzzle),
+    solution: CreateSolvedBoard(startPuzzle),
+    targets: CalculateBoardTargets(CreateSolvedBoard(startPuzzle)),
 
     gameState: PuzzleState.IN_PROGRESS,
     paintMode: true
@@ -71,6 +71,14 @@ export const puzzleReducer = (state = initialState, action) => {
                 gameState: updatedGameState
             };
 
+        case STORE_ACTIONS.Reset_Game:
+            return {
+                ...state,
+                board: CreateEmptyBoard(state.puzzle),
+                targets: CalculateBoardTargets(CreateSolvedBoard(state.puzzle)),
+                gameState: PuzzleState.IN_PROGRESS
+            };
+
         case STORE_ACTIONS.Toggle_Paint_Mode:
             return {
                 ...state,
@@ -85,7 +93,7 @@ export const puzzleReducer = (state = initialState, action) => {
 
 const getUpdatedBoard = (board, x, y, newStatus) => {
     const newBoard = [...board];
-    const updatedTile = { x: x, y: y, status: newStatus };
+    const updatedTile = { x: x, y: y, status: newStatus, color: board[y][x].color };
     
     const newBoardRow = [...board[y]];
     newBoardRow[x] = updatedTile
